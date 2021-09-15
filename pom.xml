@@ -8,6 +8,7 @@
         <module>../eureka-service</module>
         <module>../config-service</module>
         <module>../vm-provider</module>
+        <module>../region-provider</module>
     </modules>
 
     <parent>
