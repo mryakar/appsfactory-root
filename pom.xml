@@ -9,6 +9,8 @@
         <module>../config-service</module>
         <module>../vm-provider</module>
         <module>../region-provider</module>
+        <module>../gateway</module>
+        <module>../insurance-premium-provider</module>
     </modules>
 
     <parent>
