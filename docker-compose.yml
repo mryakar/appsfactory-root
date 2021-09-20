@@ -1,0 +1,5 @@
+version: "3.9"
+
+services:
+    eureka-service:
+      image: eureka-service
