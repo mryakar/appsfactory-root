@@ -17,6 +17,7 @@ These services are required to ensure the structure of a microservice architectu
 
 * Git >= v2.25.1
 * Docker >= v20.10.8
+* Docker Compose >= v1.29.2
 * Apache Maven >= v3.6.3
 * OpenJDK >= v11.0.11
 
@@ -30,8 +31,7 @@ git clone git@github.com:mryakar/root.git
 
 **2-) Download the services**
 
-Make download.sh executable. This is optional. If you already have the repositories locally then you can skip this
-step.
+Make download.sh executable. This is optional. If you already have the repositories locally then you can skip this step.
 
 ````shell
 chmod +x download.sh
@@ -43,7 +43,15 @@ Run the download script. This will download the services from Github.
 ./download.sh
 ````
 
-**2-) Build the project**
+**3-) Build the project**
+
+Run this command to build the project.
+
+````shell
+mvn package
+````
+
+**4-) Create docker images**
 
 Make createDockerImages.sh executable.
 
@@ -57,19 +65,13 @@ Run the build script. This will build the projects and creates their docker imag
 ./createDockerImages.sh
 ````
 
-**4-) Run**
+**5-) Run**
 
-Run as root;
+Run the project.
 
 ````shell
-./run
+sudo docker-compose up -d
 ````
-
-**6-) Swagger**
-
-Open the browser and go to this address;
-
-http://localhost:8091/swagger-ui/
 
 ## Developers
 
