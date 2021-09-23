@@ -1,5 +1,113 @@
 version: "3.9"
 
 services:
-    eureka-service:
-      image: eureka-service
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 1
+      PGDATA: /data/postgres
+    volumes:
+      - ./containerData/PostgreSQL:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - appsfactory
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - ./containerData/pgAdmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    networks:
+      - appsfactory
+
+  mongodb:
+    image: mongo
+    container_name: mongo
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=regions
+    volumes:
+      - ./containerData/MongoDB:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+    networks:
+      - appsfactory
+
+  eureka-service:
+    container_name: eureka-service
+    depends_on:
+      - mongodb
+      - postgres
+    image: eureka-service
+    ports:
+      - "8761:8761"
+    networks:
+      - appsfactory
+
+  config-service:
+    container_name: config-service
+    image: config-service
+    expose:
+      - "8888"
+    depends_on:
+      - eureka-service
+    networks:
+      - appsfactory
+
+  vm-provider:
+    image: vm-provider
+    expose:
+      - "8090"
+    depends_on:
+      - config-service
+    networks:
+      - appsfactory
+
+  region-provider:
+    image: region-provider
+    expose:
+      - "8091"
+    depends_on:
+      - config-service
+    networks:
+      - appsfactory
+
+  insurance-premium-provider:
+    image: insurance-premium-provider
+    expose:
+      - "8092"
+    depends_on:
+      - config-service
+    networks:
+      - appsfactory
+
+  gateway:
+    container_name: gateway
+    image: gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - insurance-premium-provider
+      - vm-provider
+      - region-provider
+    networks:
+      - appsfactory
+
+networks:
+  appsfactory:
+    driver: bridge
