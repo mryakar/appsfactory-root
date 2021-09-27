@@ -23,27 +23,7 @@ These services are required to ensure the structure of a microservice architectu
 
 ## Installation
 
-**1-) Download the root project**
-
-````text
-git clone git@github.com:mryakar/root.git
-````
-
-**2-) Download the services**
-
-Make download.sh executable. This is optional. If you already have the repositories locally then you can skip this step.
-
-````shell
-chmod +x download.sh
-````
-
-Run the download script. This will download the services from Github.
-
-````shell
-./download.sh
-````
-
-**3-) Build the project**
+**1-) Build the project**
 
 Run this command to build the project.
 
@@ -51,7 +31,7 @@ Run this command to build the project.
 mvn package
 ````
 
-**4-) Create docker images**
+**2-) Create docker images**
 
 Make createDockerImages.sh executable.
 
@@ -65,13 +45,40 @@ Run the build script. This will build the projects and creates their docker imag
 ./createDockerImages.sh
 ````
 
-**5-) Run**
+**3-) Run**
 
 Run the project.
 
 ````shell
 sudo docker-compose up -d
 ````
+
+**4-) Import Regions**
+
+Make importPostCodes.sh executable.
+
+````shell
+chmod +x importPostCodes.sh
+````
+
+Run the build script. This will import regions to the system.
+
+````shell
+./importPostCodes.sh
+````
+
+**5-) Open Swagger UI for the services**
+
+- For vm-provider http://localhost:8090/swagger-ui/
+- For region-provider http://localhost:8091/swagger-ui/
+- For insurance-premium-provider http://localhost:8092/swagger-ui/
+
+Note: Normally, in microservice architectures, microservices are not bind to host's ports. Instead, they only expose
+their ports to the container environment. Ports are bind to host for only to show Swagger UI. This can be changed in the
+docker-compose.yml file.
+
+Note: Swagger UIs can be used to test the services individually or HTTP requests can be sent to the services through the
+gateway which means all request will be sent to http://localhost:8080/api/**.
 
 ## Developers
 
