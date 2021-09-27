@@ -15,11 +15,13 @@ These services are required to ensure the structure of a microservice architectu
 
 ## Dependencies
 
+* An operating system which is based on Linux.
 * Git >= v2.25.1
 * Docker >= v20.10.8
 * Docker Compose >= v1.29.2
 * Apache Maven >= v3.6.3
 * OpenJDK >= v11.0.11
+* curl >= v7.68.0
 
 ## Installation
 
@@ -39,7 +41,7 @@ Make createDockerImages.sh executable.
 chmod +x createDockerImages.sh
 ````
 
-Run the build script. This will build the projects and creates their docker images.
+Run the build script as root. This will build the projects and creates their docker images.
 
 ````shell
 ./createDockerImages.sh
